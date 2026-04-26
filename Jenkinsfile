@@ -4,16 +4,16 @@ pipeline {
     stages {
         stage('Install') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh '''
-                    npx sonar-scanner \
-                    -Dsonar.projectKey=react-app \
+                    bat '''
+                    npx sonar-scanner ^
+                    -Dsonar.projectKey=react-app ^
                     -Dsonar.sources=src
                     '''
                 }
