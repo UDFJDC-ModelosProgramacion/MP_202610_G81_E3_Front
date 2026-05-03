@@ -11,11 +11,10 @@ class ChatHeader extends Component {
 
         return (
             <div className="chat-header">
-                {conversation.imagen
-                    ? <img src={conversation.imagen} alt={conversation.nombre} className="chat-header-avatar" />
-                    : <span className="chat-header-emoji">🏠</span>
-                }
-                <span className="chat-header-nombre">{conversation.nombre}</span>
+                <span className="chat-header-emoji">🏠</span>
+                <div className="chat-header-info">
+                    <span className="chat-header-nombre">{conversation.name}</span>
+                </div>
             </div>
         );
     }
