@@ -11,16 +11,32 @@ class TopBar extends Component {
                 {/*Barra de navegacion.*/}
                 <nav className="navbar">
 
-                    {/* Hay que modificarlo y poner el logo. */}
                     <div className="navbar-logo">
-                        <img src={logoHuella} alt="Logo Pagina" className="logo-img" />
+                        <Link to="/">
+                        <img src={logoHuella} alt="Logo" className="logo-img" />
+                        </Link>
                     </div>
 
                     {/* Lista para redirigir a las paginas */}
                     <ul className="navbar-links">
-                        <li>Inicio</li>
-                        <li>Adoptar</li>
-                        <li>Refugios</li>
+                            <li>
+                            <Link to="/" className="nav-links">Inicio</Link>
+                            </li>
+
+                            <li>
+                            <Link to="/" className="nav-links">Adoptar</Link>
+                            </li>
+
+                            <li>
+                            <Link to="/refugios" className="nav-links">Refugios</Link>
+                            </li>
+
+                            {/*Se añade el boton de busqueda*/}
+                            <li>
+                            <Link to="/buscar" className="nav-search-link">
+                                <span className="search-icon">🔍</span>
+                            </Link>
+                        </li>
                     </ul>
 
                     {/* Para los dos de autenticacion */}
