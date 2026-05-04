@@ -11,7 +11,7 @@ body {
 
 body {
   margin: 0;
-  /* Aplicamos la fuente a toda la aplicación */
+  /* Aplicacion de la fuente a la app */
   font-family: 'Lato', sans-serif; 
   -webkit-font-smoothing: antialiased;
 }
