@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import TopBar from './components/TopBar';
 import Shelter from './pages/Shelter';
 import Search from './pages/Search';
+import MessagesPage from "./pages/MessagesPage.jsx";
 
 // App principal.
 function App() {
@@ -33,6 +34,9 @@ function App() {
 
             {/*Ruta para la pagina de busqueda*/}
             <Route path="/buscar" element={<Search />} />
+
+            {/*Ruta para la pagina de mensajes*/}
+            <Route path="/messages" element={<MessagesPage />} />
           </Routes>
         </main>
       </div>
