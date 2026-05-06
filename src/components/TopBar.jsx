@@ -24,14 +24,13 @@ class TopBar extends Component {
                             </li>
 
                             <li>
-                            <Link to="/" className="nav-links">Adoptar</Link>
+                            <Link to="/adoptar" className="nav-links">Adoptar</Link>
                             </li>
 
                             <li>
                             <Link to="/refugios" className="nav-links">Refugios</Link>
                             </li>
 
-                            {/*Se añade el boton de busqueda*/}
                             <li>
                             <Link to="/buscar" className="nav-search-link">
                                 <span className="search-icon">🔍</span>

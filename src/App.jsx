@@ -9,6 +9,7 @@ import TopBar from './components/TopBar';
 import Shelter from './pages/Shelter';
 import Search from './pages/Search';
 import MessagesPage from "./pages/MessagesPage.jsx";
+import AdoptionForm from './components/AdoptionForm';
 
 // App principal.
 function App() {
@@ -37,6 +38,9 @@ function App() {
 
             {/*Ruta para la pagina de mensajes*/}
             <Route path="/messages" element={<MessagesPage />} />
+
+            {/*Ruta para la página de adopcion*/}
+            <Route path="/adoptar" element={<AdoptionForm />} />
           </Routes>
         </main>
       </div>
