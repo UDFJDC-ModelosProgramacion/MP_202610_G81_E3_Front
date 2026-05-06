@@ -8,6 +8,12 @@
   border-bottom: 1px solid #E0E0E0;
 }
 
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 /* Imagen logo */
 .logo-img {
   height: 35px;
@@ -15,21 +21,48 @@
   cursor: pointer;
 }
 
-/* Barra de nav : links*/
 .navbar-links {
-  font-family: 'Lato', ssans-serif;
   display: flex;
+  align-items: center;
   list-style: none;
   gap: 40px;
   margin: 0;
   padding: 0;
-  cursor: pointer;
 }
 
-/* Barra de nav : botones*/
-.navbar-auth {
-  display: flex;
-  gap: 15px;
+.nav-links {
+  text-decoration: none;
+  color: #333;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-links:hover {
+  color: #3A31D8;
+}
+
+.nav-links.active {
+  color: #3A31D8;
+  font-weight: 700;
+}
+
+/* Línea debajo al pasar mouse */
+.nav-links::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -5px;
+  background-color: #3A31D8;
+  transition: width 0.3s ease;
+}
+
+.nav-links:hover::after {
+  width: 100%;
 }
 
 /* Barra de nav : boton registro*/
@@ -43,14 +76,45 @@
   cursor: pointer;
 }
 
+.btn-registro:hover {
+  background-color: #140e91;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
 /* Barra de nav : boton inicio sesion*/
 .btn-login {
   font-family: 'Lato', sans-serif;
-  background-color: #040142;
+  background-color: #140d99;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+}
+
+.btn-login:hover {
+  background-color: #08044e;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de búsqueda */
+.nav-search-link {
+  text-decoration: none;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.nav-search-link:hover {
+  transform: scale(1.15);
+  color: #3A31D8;
+}
+
+.search-icon {
+  display: inline-block;
+  transition: all 0.3s ease;
 }

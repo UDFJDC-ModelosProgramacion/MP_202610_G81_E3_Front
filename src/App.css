@@ -1,0 +1,58 @@
+/* Para definir cómo se ven los elementos. */
+
+/* Barra de navegacion principal */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  padding: 0 50px;
+  height: 80px;
+  border-bottom: 1px solid #E0E0E0;
+}
+/* Imagen logo */
+.logo-img {
+    height: 35px;
+    width: auto;
+    cursor: pointer;
+}
+
+/* Barra de nav : links*/
+.navbar-links {
+    font-family: 'Lato', ssans-serif;
+    display : flex;
+    list-style: none;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Barra de nav : botones*/
+.navbar-auth {
+    display: flex;
+    gap: 15px;
+}
+
+/* Barra de nav : boton registro*/
+.btn-registro {
+    font-family: 'Lato', sans-serif;
+    background-color: #3A31D8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Barra de nav : boton inicio sesion*/
+.btn-login {
+    font-family: 'Lato', sans-serif;
+    background-color: #040142;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}

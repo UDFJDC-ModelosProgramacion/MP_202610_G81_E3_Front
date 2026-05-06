@@ -1,0 +1,195 @@
+/*Contenedor principal. */
+.search-page-container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding-bottom: 50px;
+}
+
+/* Degradado. */
+.search-hero-section {
+  background: linear-gradient(135deg, #3A31D8 0%, #655ee6 100%);
+  padding: 60px 20px;
+  text-align: center;
+  color: white;
+}
+
+/*Sombra texto*/
+.search-main-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/*Barra de búsqueda.*/
+.search-controls-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 10px;
+  border-radius: 50px; /*Bordes redondeados*/
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.search-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Selector de refugios o mascotas.*/
+.search-type-select {
+  padding: 12px 20px;
+  border: none;
+  border-right: 2px solid #f1f5f9;
+  background: transparent;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+}
+
+.search-type-select:hover {
+  color: #3A31D8;
+}
+
+/* Entrada de texto */
+.search-field-wrapper {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.search-field-icon {
+  margin-right: 12px;
+  color: #94a3b8;
+}
+
+.search-main-input {
+  width: 100%;
+  border: none;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  outline: none;
+  color: #334055;
+}
+
+/* Contenedor de resultados. */
+.search-results-container {
+  max-width: 1200px;
+  margin: 10px auto 0;
+  padding: 0 20px;
+}
+
+/*Para las columnas.*/
+.shelter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 25px;
+}
+
+/*Mensajes en pantalla.*/
+.loading-spinner, .no-results {
+  text-align: center;
+  padding: 50px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  color: #64748b;
+  font-size: 1.2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: #7f8c8d;
+}
+
+.empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+/* Para la ventana emergente. */
+.modal-footer {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Boton de cerrar de la ventana emergente.*/
+.btn-secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/*Boton de X*/
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 24px;
+  font-weight: 300;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  line-height: 1;
+}
+
+.close-button:hover {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* Mejora en texto. */
+.modal-header h2 {
+  color: #3A31D8;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.modal-body p strong {
+  color: #3A31D8;
+  font-weight: 700;
+}
+
+.modal-body p {
+  color: #1e293b;
+  margin: 12px 0;
+  font-size: 1.05rem;
+}
