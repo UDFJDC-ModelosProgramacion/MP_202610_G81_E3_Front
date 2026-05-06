@@ -1,0 +1,101 @@
+.medical-container {
+    padding: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Lato', sans-serif;
+}
+
+.medical-title {
+    color: #3A31D8;
+    margin-bottom: 20px;
+}
+
+.medical-box {
+    border: 1px solid #999;
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    gap: 40px;
+    background: white;
+}
+
+.pet-sidebar {
+    flex: 1;
+    text-align: center;
+}
+
+.pet-img {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.pet-name-badge {
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 5px 20px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.medical-form {
+    flex: 3;
+    position: relative;
+}
+
+.label-blue {
+    color: #3A31D8;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.select-custom {
+    float: right;
+    padding: 8px;
+    border-radius: 15px;
+    border: 1px solid #999;
+}
+
+.form-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #999;
+}
+
+.text-area-custom {
+    width: 100%;
+    height: 60px;
+    border-radius: 15px;
+    border: 1px solid #999;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.timeline-item {
+    background: #f9f9f9;
+    border: 1px solid #999;
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.btn-save-medical {
+    background-color: #040142;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+}
