@@ -1,4 +1,4 @@
- Guía de instalación del frontend
+# Guía de instalación del frontend
 
 ## Requisitos
 - Tener Docker Desktop instalado.
