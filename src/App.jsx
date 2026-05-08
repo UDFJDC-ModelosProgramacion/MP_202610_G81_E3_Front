@@ -10,6 +10,9 @@ import Shelter from './pages/Shelter';
 import Search from './pages/Search';
 import MessagesPage from "./pages/MessagesPage.jsx";
 import AdoptionForm from './components/AdoptionForm';
+import ProfilePage from './pages/ProfilePage';
+import MedicalEvents from './pages/MedicalEvents';
+
 
 // App principal.
 function App() {
@@ -41,6 +44,14 @@ function App() {
 
             {/*Ruta para la página de adopcion*/}
             <Route path="/adoptar" element={<AdoptionForm />} />
+            {/* Ruta para la página de perfil */}
+            <Route path="/perfil" element={<ProfilePage />} />
+            {/* Ruta para la página de historial médico */}
+            <Route path="/historial-medico" element={<MedicalEvents />} />
+
+
+
+            
           </Routes>
         </main>
       </div>
