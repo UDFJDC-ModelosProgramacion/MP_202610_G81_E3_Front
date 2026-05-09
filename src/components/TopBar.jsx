@@ -28,7 +28,7 @@ class TopBar extends Component {
                             </li>
 
                             <li>
-                            <Link to="/refugios" className="nav-links">Refugios</Link>
+                            <Link to="/gestion" className="nav-links">Gestion</Link>
                             </li>
 
                             <li>

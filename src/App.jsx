@@ -12,6 +12,8 @@ import MessagesPage from "./pages/MessagesPage.jsx";
 import AdoptionForm from './components/AdoptionForm';
 import ProfilePage from './pages/ProfilePage';
 import MedicalEvents from './pages/MedicalEvents';
+import AdminSystem from './pages/AdminSystem';
+import Pet from './pages/Pet';
 
 
 // App principal.
@@ -44,14 +46,18 @@ function App() {
 
             {/*Ruta para la página de adopcion*/}
             <Route path="/adoptar" element={<AdoptionForm />} />
+
             {/* Ruta para la página de perfil */}
             <Route path="/perfil" element={<ProfilePage />} />
+
             {/* Ruta para la página de historial médico */}
             <Route path="/historial-medico" element={<MedicalEvents />} />
 
+            {/* Ruta para la página de gestion */}
+            <Route path="/gestion" element={<AdminSystem />} />
 
-
-            
+            {/* Ruta para la página de mascotas */}
+            <Route path="/mascotas" element={<Pet />} />            
           </Routes>
         </main>
       </div>

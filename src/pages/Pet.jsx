@@ -1,35 +1,35 @@
-import '../css/Shelter.css';
+import '../css/Pet.css';
 
-function Shelter() {
+function Pet() {
   return (
-    <div className="shelter-container">
-      <header className="shelter-header">
-        <h1>Administración de Refugios</h1>
-        <p>Panel de gestion de refugios.</p>
+    <div className="pet-container">
+      <header className="pet-header">
+        <h1>Administración de Mascotas</h1>
+        <p>Panel de gestion de mascotas.</p>
       </header>
 
-      <section className="shelter-grid">
+      <section className="pet-grid">
         {/* Opción Crear */}
         <div className="menu-card card-crear">
           <div className="card-icon">➕</div>
-          <h3>Crear Refugio</h3>
-          <p>Registrar un nuevo refugio.</p>
+          <h3>Crear Mascotas</h3>
+          <p>Registrar una nueva mascota.</p>
           <button className="btn-action">Crear</button>
         </div>
 
         {/* Opción Editar */}
         <div className="menu-card card-editar">
           <div className="card-icon">✏️</div>
-          <h3>Editar Refugio</h3>
-          <p>Actualiza datos de contacto del refugio.</p>
+          <h3>Editar Detalles de Mascotas</h3>
+          <p>Actualiza datos de cada mascota.</p>
           <button className="btn-action">Editar</button>
         </div>
 
         {/* Opción Eliminar */}
         <div className="menu-card card-eliminar">
           <div className="card-icon">🗑️</div>
-          <h3>Eliminar Refugio</h3>
-          <p>Eliminar refugios fuera de operación.</p>
+          <h3>Eliminar Mascotas</h3>
+          <p>Eliminar mascotas.</p>
 
           <button className="btn-action btn-eliminar">Eliminar</button>
         </div>
@@ -39,4 +39,4 @@ function Shelter() {
   );
 }
 
-export default Shelter;
+export default Pet;
