@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import '../css/Pet.css';
 
 function Pet() {
+  const navigate = useNavigate();
   return (
     <div className="pet-container">
       <header className="pet-header">
@@ -14,7 +16,12 @@ function Pet() {
           <div className="card-icon">➕</div>
           <h3>Crear Mascotas</h3>
           <p>Registrar una nueva mascota.</p>
-          <button className="btn-action">Crear</button>
+          <button
+            className="btn-action" 
+            onClick={() => navigate('/agregarmascotas')}
+           >
+            Crear
+          </button> 
         </div>
 
         {/* Opción Editar */}
