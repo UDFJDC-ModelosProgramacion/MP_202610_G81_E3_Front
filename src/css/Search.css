@@ -78,7 +78,8 @@
 
 /* Contenedor de resultados. */
 .search-results-container {
-  max-width: 1200px;
+  display: flex;
+  max-width: 1600px;
   margin: 10px auto 0;
   padding: 0 20px;
 }
@@ -148,6 +149,7 @@
 .btn-secondary:active {
   transform: translateY(0);
 }
+
 
 /*Boton de X*/
 .close-button {
