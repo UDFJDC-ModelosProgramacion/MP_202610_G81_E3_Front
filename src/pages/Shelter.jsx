@@ -5,7 +5,7 @@ function Shelter() {
     <div className="shelter-container">
       <header className="shelter-header">
         <h1>Administración de Refugios</h1>
-        <p>Panel interno para gestionar refugios.</p>
+        <p>Panel de gestion de refugios.</p>
       </header>
 
       <section className="shelter-grid">
