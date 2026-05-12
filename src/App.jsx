@@ -15,6 +15,8 @@ import MedicalEvents from './pages/MedicalEvents';
 import AdminSystem from './pages/AdminSystem';
 import Pet from './pages/Pet';
 import AddPet from './pages/AddPet';
+import GestionAdopciones from './pages/GestionAdopciones';
+import RegistroDevolucion from './pages/RegistroDevolucion';
 
 
 // App principal.
@@ -62,6 +64,12 @@ function App() {
 
             {/* Ruta para la página de agregar mascotas */}
             <Route path="/agregarmascotas" element={<AddPet />} />
+
+            <Route path="/gestion-adopciones" element={<GestionAdopciones />} />
+
+            <Route path="/devolucion" element={<RegistroDevolucion />} />
+
+
           </Routes>
         </main>
       </div>
