@@ -16,11 +16,11 @@ function AdminSystem() {
           <div className="card-icon">🏠</div>
           <h3>Gestion de Refugios</h3>
           <button
-            className="btn-action" 
+            className="btn-action"
             onClick={() => navigate('/refugios')}
-           >
+          >
             Gestionar
-          </button> 
+          </button>
         </div>
 
         {/* Opción Pets */}
@@ -28,13 +28,32 @@ function AdminSystem() {
           <div className="card-icon">🐕</div>
           <h3>Gestion de Mascotas</h3>
           <button
-            className="btn-action" 
+            className="btn-action"
             onClick={() => navigate('/mascotas')}
-           >
+          >
             Gestionar
-          </button> 
+          </button>
         </div>
-        
+
+        <div className="menu-card card-adopcion">
+          <div className="card-icon">
+            
+          </div>
+          <h3>Gestion de Adopciones</h3>
+          <button className="btn-action" onClick={() => navigate('/gestion-adopciones')}>
+            Gestionar
+          </button>
+        </div>
+
+        <div className="menu-card card-devolucion">
+          <div className="card-icon">
+          </div>
+          <h3>Registro de Devolución</h3>
+          <button className="btn-action" onClick={() => navigate('/devolucion')}>
+            Gestionar
+          </button>
+        </div>
+
       </section>
     </div>
   );
