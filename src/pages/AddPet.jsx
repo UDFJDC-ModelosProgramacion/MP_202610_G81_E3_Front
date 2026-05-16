@@ -71,7 +71,8 @@ function AddPet() {
             ...formData,
             age: parseInt(formData.age),
             size: parseFloat(formData.size),
-            shelterName: refugioSeleccionado
+            shelterName: refugioSeleccionado,
+            image: "" 
         };
 
         try {
