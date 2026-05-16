@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
+.edit-shelter-container {
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+}
+
+.edit-shelter-container h1 {
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+/* Select de arriba */
+.shelter-select-top {
+    width: 100%;
+    height: 55px;
+    appearance: none;
+    -webkit-appearance: none;
+
+    padding: 0 50px 0 18px;
+
+    border: 2px solid #dcdcdc;
+    border-radius: 12px;
+
+    background-color: #fff;
+
+    font-size: 1rem;
+    font-weight: 500;
+    color: #444;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+}
+
+.shelter-select-top:hover {
+    border-color: #b8b8b8;
+}
+
+.shelter-select-top:focus {
+    outline: none;
+    border-color: #3A31D8;
+    box-shadow: 0 0 0 4px rgba(58, 49, 216, 0.12);
+}
+
+.shelter-select-top option {
+    color: #333;
+    background-color: #fff;
+    font-weight: 500;
+}
+
+.edit-shelter-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 30px;
+    padding: 45px;
+    margin-top: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+}
+
+.edit-shelter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    color: #4a4a4a;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-left: 4px;
+}
+
+.form-group input {
+    padding: 16px 20px;
+    border: 2px solid #edf0f5;
+    border-radius: 16px;
+    font-size: 1rem;
+    background-color: #fbfcfe;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #3A31D8;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 8px 20px rgba(58, 49, 216, 0.08);
+}
+
+/* Errores */
+.input-error {
+    border-color: #ff4d4d !important;
+    background-color: #fff8f8 !important;
+}
+
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error-text::before {
+    content: "⚠";
+}
+
+/* Botones*/
+.edit-shelter-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 16px 35px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-cancel {
+    background-color: #f1f3f9;
+    color: #5c5c5c;
+}
+
+.btn-cancel:hover {
+    background-color: #e2e6f0;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #3A31D8 0%, #2a22a5 100%);
+    color: white;
+    box-shadow: 0 10px 25px rgba(58, 49, 216, 0.25);
+}
+
+.btn-save:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(58, 49, 216, 0.35);
+}
+
+.btn-save:disabled {
+    background: #d1d1d1;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* MMensajes / alertas */
+.status-message {
+    margin-top: 30px;
+    padding: 18px;
+    border-radius: 18px;
+    text-align: center;
+    font-weight: 700;
+    animation: fadeIn 0.4s ease;
+}
+
+.status-message.success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.status-message.error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .edit-shelter-grid {
+        grid-template-columns: 1fr;
+    }
+    .edit-shelter-card {
+        padding: 25px;
+    }
+    .edit-shelter-container h1 {
+        font-size: 2rem;
+    }
+}

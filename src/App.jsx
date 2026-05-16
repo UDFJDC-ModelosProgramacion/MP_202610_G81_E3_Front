@@ -17,6 +17,7 @@ import Pet from './pages/Pet';
 import AddPet from './pages/AddPet';
 import GestionAdopciones from './pages/GestionAdopciones';
 import RegistroDevolucion from './pages/RegistroDevolucion';
+import EditShelter from './pages/EditShelter.jsx';
 
 
 // App principal.
@@ -69,7 +70,8 @@ function App() {
 
             <Route path="/devolucion" element={<RegistroDevolucion />} />
 
-
+            {/*Ruta para editar datos del refugio*/}
+            <Route path="/editar_refugio" element={<EditShelter />} />
           </Routes>
         </main>
       </div>
