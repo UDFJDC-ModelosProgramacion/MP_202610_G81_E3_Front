@@ -27,7 +27,7 @@
   margin: 0 auto;
   background: white;
   padding: 10px;
-  border-radius: 50px; /*Bordes redondeados*/
+  border-radius: 50px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
@@ -76,18 +76,36 @@
   color: #334055;
 }
 
-/* Contenedor de resultados. */
+/* Contenedor de resultados */
 .search-results-container {
-  max-width: 1200px;
-  margin: 10px auto 0;
-  padding: 0 20px;
+  display: block;
+  max-width: 1400px;
+  margin: 30px auto 0;
+  padding: 0 30px;
 }
 
-/*Para las columnas.*/
+/* Grid de tarjetas */
 .shelter-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
+  width: 100%;
+}
+
+.search-layout-with-filter {
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+
+.search-filter-sidebar {
+  flex-shrink: 0;
+  width: 260px;
+}
+
+.search-results-main {
+  flex: 1;
+  min-width: 0;
 }
 
 /*Mensajes en pantalla.*/
@@ -118,6 +136,26 @@
 }
 
 /* Para la ventana emergente. */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  padding: 35px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
 .modal-footer {
   margin-top: 25px;
   display: flex;
@@ -128,21 +166,20 @@
 .btn-secondary {
   background-color: #f1f5f9;
   color: #475569;
-  border: none;
+  border: 1px solid #e2e8f0;
   padding: 10px 24px;
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid #e2e8f0;
 }
 
 .btn-secondary:hover {
   background-color: #e2e8f0;
   color: #1e293b;
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
 }
 
 .btn-secondary:active {
@@ -175,12 +212,24 @@
   color: #475569;
 }
 
-/* Mejora en texto. */
+.modal-header {
+  margin-bottom: 20px;
+}
+
 .modal-header h2 {
   color: #3A31D8;
   font-size: 1.8rem;
   font-weight: 800;
   margin-bottom: 5px;
+}
+
+.location-badge-modal {
+  background: #ede9fe;
+  color: #3A31D8;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .modal-body p strong {

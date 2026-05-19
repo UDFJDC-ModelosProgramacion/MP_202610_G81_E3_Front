@@ -52,5 +52,40 @@ export const shelterService = {
             console.error('Error al obtener refugio:', error);
             return { success: false, mensaje: 'Error de conexión' };
         }
+    },
+    // PUT /shelters/{id} - para actualizar un refugio por id.
+    updateShelter: async (id, formData) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_URL}/shelters/${id}`, {
+
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    id: Number(id)
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+            return {
+                ok: response.ok,
+                success: response.ok,
+                data: data
+            };
+
+        } catch (error) {
+            console.error("Error al actualizar refugio:", error);
+
+            return {
+                ok: false,
+                success: false,
+                mensaje: "Error de conexión",
+                data: {}
+            };
+        }
     }
 };

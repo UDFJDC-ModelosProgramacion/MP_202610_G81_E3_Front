@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import '../css/Shelter.css';
 
 function Shelter() {
+  const navigate = useNavigate();
   return (
     <div className="shelter-container">
       <header className="shelter-header">
@@ -22,7 +24,12 @@ function Shelter() {
           <div className="card-icon">✏️</div>
           <h3>Editar Refugio</h3>
           <p>Actualiza datos de contacto del refugio.</p>
-          <button className="btn-action">Editar</button>
+          <button 
+          className="btn-action" 
+          onClick={() => navigate('/editar_refugio')}
+          >
+          Editar
+          </button> 
         </div>
 
         {/* Opción Eliminar */}
