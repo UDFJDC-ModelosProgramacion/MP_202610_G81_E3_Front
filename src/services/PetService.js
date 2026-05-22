@@ -16,6 +16,34 @@ export const petService = {
     }
   },
 
+  // Obtener una mascota por ID
+  obtenerPorId: async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`);
+      if (!response.ok) throw new Error(`Error al obtener la mascota con id ${id}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  },
+
+  // Actualizar una mascota por ID
+  actualizar: async (id, petData) => {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(petData),
+      });
+      if (!response.ok) throw new Error(`Error al actualizar la mascota con id ${id}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  },
+
   // Buscar por keyword + filtros (array de strings)
   buscar: async (keyword = '', filtros = []) => {
     try {
