@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8999/api/adoptions"; 
+const API_URL = "http://localhost:8080/api/adoptions";
 
 export const createAdoption = async (adoptionData) => {
   const response = await axios.post(API_URL, adoptionData);

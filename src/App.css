@@ -19,7 +19,7 @@
 
 /* Barra de nav : links*/
 .navbar-links {
-    font-family: 'Lato', ssans-serif;
+    font-family: 'Lato', sans-serif;
     display : flex;
     list-style: none;
     gap: 40px;
