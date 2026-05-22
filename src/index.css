@@ -1,17 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
-
-/* Para definir el estilo de la página*/
-
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  /* Aplicacion de la fuente a la app */
   font-family: 'Lato', sans-serif; 
   -webkit-font-smoothing: antialiased;
 }
