@@ -5,6 +5,9 @@ import '../css/AddPet.css';
 
 function AddPet() {
     const fileInputRef = useRef(null);
+
+    const shelterSectionRef = useRef(null); 
+    
     const [imagePreview, setImagePreview] = useState(null);
     const [refugios, setRefugios] = useState([]);
     const [refugioSeleccionado, setRefugioSeleccionado] = useState("");
@@ -66,9 +69,13 @@ function AddPet() {
     const handleSave = async (e) => {
         e.preventDefault();
         
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            if (!refugioSeleccionado && shelterSectionRef.current) {
+                shelterSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
 
-        // Estrudtura del Pet DTO
         const petToSave = {
             name: formData.name,
             species: formData.species,
@@ -106,7 +113,8 @@ function AddPet() {
                     <h1>Agregar mascota</h1>
                 </div>
 
-                <div className="shelter-selection">
+
+                <div className="shelter-selection" ref={shelterSectionRef}>
                     <select 
                         className={`shelter-select ${errors.shelter ? 'input-error' : ''}`}
                         value={refugioSeleccionado} 
@@ -136,7 +144,6 @@ function AddPet() {
                             if (file) {
                                 const reader = new FileReader();
                                 reader.onloadend = () => {
-                                    // Base64 para preview.
                                     setImagePreview(reader.result);
                                     setErrors({...errors, image: null});
                                 };
