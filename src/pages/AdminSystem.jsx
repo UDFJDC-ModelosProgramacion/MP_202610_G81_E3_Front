@@ -36,9 +36,7 @@ function AdminSystem() {
         </div>
 
         <div className="menu-card card-adopcion">
-          <div className="card-icon">
-            
-          </div>
+          <div className="card-icon">🗒️</div>
           <h3>Gestion de Adopciones</h3>
           <button className="btn-action" onClick={() => navigate('/gestion-adopciones')}>
             Gestionar
@@ -46,8 +44,7 @@ function AdminSystem() {
         </div>
 
         <div className="menu-card card-devolucion">
-          <div className="card-icon">
-          </div>
+          <div className="card-icon">📨</div>
           <h3>Registro de Devolución</h3>
           <button className="btn-action" onClick={() => navigate('/devolucion')}>
             Gestionar
