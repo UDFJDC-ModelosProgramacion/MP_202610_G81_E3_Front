@@ -94,4 +94,22 @@ export const petService = {
       throw error;
     }
   },
+  crear: async (petData) => {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(petData),
+      });
+      
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Error del servidor (${response.status}): ${errorBody}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error en petService.crear:', error);
+      throw error;
+    }
+  }
 };

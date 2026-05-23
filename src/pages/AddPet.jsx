@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { petService } from '../services/PetService.js';
 import '../css/AddPet.css';
 
 function AddPet() {
@@ -19,6 +20,7 @@ function AddPet() {
         age: '',
         sex: '',
         size: '',
+        requiredSpace: '',
         temperament: '',
         arriveToShelterDate: '',
         specificRequirements: ''
@@ -27,7 +29,7 @@ function AddPet() {
     useEffect(() => {
         const fetchRefugios = async () => {
             try {
-                const response = await fetch('http://localhost:8999/api/shelters');
+                const response = await fetch('http://localhost:8080/api/shelters');
                 const data = await response.json();
                 setRefugios(data);
             } catch (error) {
@@ -51,7 +53,6 @@ function AddPet() {
         if (!imagePreview) newErrors.image = "La fotografía es obligatoria";
         if (!refugioSeleccionado) newErrors.shelter = "Seleccione un refugio";
         
-        // Validación de todos los campos del formulario.
         Object.keys(formData).forEach(key => {
             if (!formData[key]) {
                 newErrors[key] = "Campo requerido";
@@ -67,29 +68,31 @@ function AddPet() {
         
         if (!validateForm()) return;
 
+        // Estrudtura del Pet DTO
         const petToSave = {
-            ...formData,
+            name: formData.name,
+            species: formData.species,
+            breed: formData.breed,
             age: parseInt(formData.age),
-            size: parseFloat(formData.size),
-            shelterName: refugioSeleccionado,
-            image: "" 
+            sex: formData.sex,
+            size: formData.size,
+            requiredSpace : formData.requiredSpace,
+            arriveToShelterDate: formData.arriveToShelterDate,
+            temperament: formData.temperament,
+            specificRequirements: formData.specificRequirements,
+            shelter: {
+                id: parseInt(refugioSeleccionado)
+            },
+            image: imagePreview
         };
 
         try {
-            const response = await fetch('http://localhost:8999/api/pets', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(petToSave)
-            });
-
-            if (response.ok) {
-                alert("Registro guardado exitosamente.");
-                navigate(-1);
-            } else {
-                alert("Error: No se pudo guardar la información en el servidor.");
-            }
+            await petService.crear(petToSave);
+            alert("¡Registro guardado exitosamente!");
+            navigate(-1);
         } catch (error) {
-            alert("Error de red: Verifique la conexión.");
+            console.error("Detalle del fallo al guardar:", error);
+            alert(`Error: No se pudo registrar la mascota. ${error.message}`);
         }
     };
 
@@ -114,7 +117,7 @@ function AddPet() {
                     >
                         <option value="" disabled hidden>Seleccione el refugio asociado</option>
                         {refugios.map((r) => (
-                            <option key={r.id} value={r.name}>{r.name}</option>
+                            <option key={r.id} value={r.id}>{r.name}</option>
                         ))}
                     </select>
                     {errors.shelter && 
@@ -123,7 +126,7 @@ function AddPet() {
             </div>
 
             <form className="add-pet-form" onSubmit={handleSave} noValidate>
-                {/*Identidad*/}
+                {/* Sección de carga de imagen */}
                 <div className="image-upload-section">
                     <input 
                         type="file" 
@@ -131,8 +134,13 @@ function AddPet() {
                         onChange={(e) => {
                             const file = e.target.files[0];
                             if (file) {
-                                setImagePreview(URL.createObjectURL(file));
-                                setErrors({...errors, image: null});
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    // Base64 para preview.
+                                    setImagePreview(reader.result);
+                                    setErrors({...errors, image: null});
+                                };
+                                reader.readAsDataURL(file);
                             }
                         }} 
                         style={{ display: 'none' }} 
@@ -155,9 +163,7 @@ function AddPet() {
                     <span className="error-text">{errors.image}</span>}
 
                     <div className="main-name-input">
-                        <label>Nombre de la mascota 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Nombre de la mascota <span className="required-star">*</span></label>
                         <input 
                             type="text" 
                             name="name" 
@@ -173,15 +179,12 @@ function AddPet() {
 
                 <hr className="form-divider" />
 
-                {/*Datos completos*/}
+                {/* Información General */}
                 <div className="form-data-grid">
                     <h3 className="form-section-title">Información General</h3>
                     
                     <div className="input-group">
-                        <label>Especie 
-                          <span className="required-star">*
-                          </span>
-                        </label>
+                        <label>Especie <span className="required-star">*</span></label>
                         <select name="species" 
                         className={errors.species ? 'input-error' : ''} 
                         value={formData.species} 
@@ -198,9 +201,7 @@ function AddPet() {
                     </div>
 
                     <div className="input-group">
-                        <label>Raza 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Raza <span className="required-star">*</span></label>
                         <input type="text" name="breed" 
                         className={errors.breed ? 'input-error' : ''} 
                         value={formData.breed} 
@@ -211,9 +212,7 @@ function AddPet() {
                     </div>
 
                     <div className="input-group">
-                        <label>Sexo 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Sexo <span className="required-star">*</span></label>
                         <select name="sex" className={errors.sex ? 'input-error' : ''} 
                         value={formData.sex}
                         onChange={handleChange}>
@@ -226,9 +225,7 @@ function AddPet() {
                     </div>
 
                     <div className="input-group">
-                        <label>Edad (años) 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Edad (años) <span className="required-star">*</span></label>
                         <input type="number" name="age" 
                         className={errors.age ? 'input-error' : ''} 
                         value={formData.age} 
@@ -238,21 +235,40 @@ function AddPet() {
                     </div>
 
                     <div className="input-group">
-                        <label>Tamaño (cm) 
-                          <span className="required-star">*</span>
-                        </label>
-                        <input type="number" name="size" 
-                        className={errors.size ? 'input-error' : ''} 
-                        value={formData.size} 
-                        onChange={handleChange} step="0.1" min="1" max="250" placeholder="0.0" />
+                        <label>Tamaño <span className="required-star">*</span></label>
+                        <select
+                            name="size"
+                            className={errors.size ? 'input-error' : ''}
+                            value={formData.size}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled hidden>Seleccionar tamaño</option>
+                            <option value="Pequeño">Pequeño</option>
+                            <option value="Mediano">Mediano</option>
+                            <option value="Grande">Grande</option>
+                        </select>
                         {errors.size && 
                         <span className="error-text">{errors.size}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label>Fecha de llegada 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Espacio Requerido <span className="required-star">*</span></label>
+                        <select
+                            name="requiredSpace"
+                            className={errors.requiredSpace ? 'input-error' : ''}
+                            value={formData.requiredSpace}
+                            onChange={handleChange}
+                        >
+                            <option value="" disabled hidden>Seleccionar espacio</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Apartamento">Apartamento</option>
+                        </select>
+                        {errors.requiredSpace && 
+                        <span className="error-text">{errors.requiredSpace}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>Fecha de llegada <span className="required-star">*</span></label>
                         <input type="date" name="arriveToShelterDate" 
                         className={errors.arriveToShelterDate ? 'input-error' : ''} 
                         value={formData.arriveToShelterDate} 
@@ -264,9 +280,7 @@ function AddPet() {
                     <h3 className="form-section-title">Personalidad y Cuidados</h3>
 
                     <div className="input-group full-width">
-                        <label>Temperamento 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Temperamento <span className="required-star">*</span></label>
                         <input type="text" name="temperament" 
                         className={errors.temperament ? 'input-error' : ''} 
                         value={formData.temperament} 
@@ -276,9 +290,7 @@ function AddPet() {
                     </div>
 
                     <div className="input-group full-width">
-                        <label>Requerimientos específicos 
-                          <span className="required-star">*</span>
-                        </label>
+                        <label>Requerimientos específicos <span className="required-star">*</span></label>
                         <textarea name="specificRequirements" 
                         className={errors.specificRequirements ? 'input-error' : ''} 
                         value={formData.specificRequirements} 
