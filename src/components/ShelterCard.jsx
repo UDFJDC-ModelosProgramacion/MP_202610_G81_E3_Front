@@ -6,6 +6,7 @@ function ShelterCard({ refugio, onVerMas }) {
 
   const resolverImagen = (image) => {
     if (!image) return null;
+    if (image.startsWith('data:image/')) return image; 
     if (image.startsWith('http://') || image.startsWith('https://')) return image;
     try {
       return new URL(`../assets/${image}`, import.meta.url).href;

@@ -92,6 +92,7 @@ function Search() {
   };
 
   const normalizarItem = (item) => {
+    console.log("image del item:", item.image?.substring(0, 50));
     let resolvedImage = item.image || "";
 
     if (item.mediaFiles && item.mediaFiles.length > 0) {
