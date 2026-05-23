@@ -52,7 +52,6 @@ const fillForm = async () => {
     await userEvent.type(getTextarea('specificRequirements'), 'Ninguno');
 };
 
-// ══════════════════════════════════════════════════════════════════════════════
 describe('AddPet', () => {
 
     beforeEach(() => {

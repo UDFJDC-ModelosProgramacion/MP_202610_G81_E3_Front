@@ -270,7 +270,6 @@ describe('Search Component Tests', () => {
             await userEvent.type(input, 'Bruno');
             await waitFor(() => expect(petService.buscarPorNombre).toHaveBeenCalled());
 
-            // Al hacer clic, el mock pasará query=undefined y mantendrá el texto 'Bruno'
             await userEvent.click(screen.getByText('Filtrar Perros'));
 
             await waitFor(() =>
