@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ShelterCard from '../components/ShelterCard';
+import PetCard from '../components/PetCard'; 
 import SearchFilter from '../components/SearchFilter';
 import { petService } from '../services/petService';
 import '../css/Search.css';
@@ -10,6 +11,7 @@ function Search() {
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [refugioSeleccionado, setRefugioSeleccionado] = useState(null);
+  const [mascotaSeleccionada, setMascotaSeleccionada] = useState(null); 
   const [baseDatosVacia, setBaseDatosVacia] = useState(false);
   const [filtrosAplicados, setFiltrosAplicados] = useState([]);
 
@@ -20,12 +22,12 @@ function Search() {
       if (tipoBusqueda === 'Mascota') {
         data = await petService.obtenerTodas();
       } else {
-        const response = await fetch('http://localhost:8999/api/shelters');
+        const response = await fetch('http://localhost:8080/api/shelters');
         if (!response.ok) throw new Error('Error al obtener refugios');
         data = await response.json();
       }
-      setResultados(data);
-      setBaseDatosVacia(data.length === 0);
+      setResultados(data || []);
+      setBaseDatosVacia(!data || data.length === 0);
     } catch (error) {
       console.error('Error cargando datos:', error);
       setResultados([]);
@@ -43,18 +45,18 @@ function Search() {
         const tieneKeyword = keyword.trim() !== '';
         const tieneFiltros = filtros.length > 0;
         if (tieneKeyword && tieneFiltros)  data = await petService.buscar(keyword, filtros);
-        else if (tieneKeyword)             data = await petService.buscarPorNombre(keyword);
-        else if (tieneFiltros)             data = await petService.buscarPorFiltros(filtros);
-        else                               data = await petService.obtenerTodas();
+        else if (tieneKeyword)              data = await petService.buscarPorNombre(keyword);
+        else if (tieneFiltros)              data = await petService.buscarPorFiltros(filtros);
+        else                                data = await petService.obtenerTodas();
       } else {
         const response = await fetch(
-          `http://localhost:8999/api/shelters/search?keyword=${encodeURIComponent(keyword)}`
+          `http://localhost:8080/api/shelters/search?keyword=${encodeURIComponent(keyword)}`
         );
         if (!response.ok) throw new Error('Error al buscar refugios');
         data = await response.json();
       }
-      setResultados(data);
-      setBaseDatosVacia(data.length === 0);
+      setResultados(data || []);
+      setBaseDatosVacia(!data || data.length === 0);
     } catch (error) {
       console.error('Error en la búsqueda:', error);
       setResultados([]);
@@ -62,7 +64,6 @@ function Search() {
       setCargando(false);
     }
   };
-
 
   useEffect(() => {
     if (!textoBusqueda.trim() && filtrosAplicados.length === 0) {
@@ -77,7 +78,7 @@ function Search() {
 
   const handleFiltrosChange = (query, { filters }) => {
     setFiltrosAplicados(filters);
-    if (query) setTextoBusqueda(query);
+    if (query !== undefined) setTextoBusqueda(query);
   };
 
   const handleTipoBusqueda = (e) => {
@@ -86,11 +87,11 @@ function Search() {
     setTextoBusqueda('');
     setResultados([]);
     setBaseDatosVacia(false);
+    setRefugioSeleccionado(null);
+    setMascotaSeleccionada(null);
   };
 
-  const normalizarRefugio = (item) => {
-    if (tipoBusqueda !== 'Refugio') return item;
-
+  const normalizarItem = (item) => {
     let resolvedImage = item.image || "";
 
     if (item.mediaFiles && item.mediaFiles.length > 0) {
@@ -109,12 +110,23 @@ function Search() {
 
   const renderResultados = () => (
     <>
-      {cargando && <div className="loading-spinner">Cargando...</div>}
+      {cargando && <div className="loading-spinner">Cargando resultados...</div>}
 
       {!cargando && resultados.length > 0 && (
         <div className="shelter-grid">
           {resultados.map((item) => {
-            const itemNormalizado = normalizarRefugio(item);
+            const itemNormalizado = normalizarItem(item);
+            
+            if (tipoBusqueda === 'Mascota') {
+              return (
+                <PetCard
+                  key={itemNormalizado.id}
+                  mascota={itemNormalizado}
+                  onVerMas={() => setMascotaSeleccionada(itemNormalizado)}
+                />
+              );
+            }
+
             return (
               <ShelterCard
                 key={itemNormalizado.id}
@@ -128,7 +140,7 @@ function Search() {
 
       {!cargando && baseDatosVacia && textoBusqueda.trim() === '' && filtrosAplicados.length === 0 && (
         <div className="empty-state">
-          <h3>No hay {tipoBusqueda.toLowerCase()}s registrados</h3>
+          <h3>No hay {tipoBusqueda.toLowerCase()}s registrados en el sistema</h3>
         </div>
       )}
 
@@ -139,7 +151,7 @@ function Search() {
       )}
     </>
   );
-
+  
   return (
     <div className="search-page-container">
       <div className="search-hero-section">
@@ -180,16 +192,14 @@ function Search() {
         )}
       </div>
 
-      {/* ─── MODAL DETALLE REFUGIO ─────────────────────────────────────── */}
+      {/* Para mostrar los detalles del refugio*/}
       {refugioSeleccionado && (
         <div className="modal-overlay" onClick={() => setRefugioSeleccionado(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={() => setRefugioSeleccionado(null)}>
-              &times;
-            </button>
+            <button className="close-button" onClick={() => setRefugioSeleccionado(null)}>&times;</button>
             <div className="modal-header">
               <h2>{refugioSeleccionado.name}</h2>
-              <span className="location-badge-modal">{refugioSeleccionado.city}</span>
+              <span className="location-badge-modal">{refugioSeleccionado.city || 'Colombia'}</span>
             </div>
             <div className="modal-body">
               {refugioSeleccionado.image && (
@@ -197,12 +207,7 @@ function Search() {
                   <img
                     src={refugioSeleccionado.image}
                     alt={`Logo de ${refugioSeleccionado.name}`}
-                    style={{
-                      maxWidth: '100%',
-                      maxHeight: '200px',
-                      borderRadius: '8px',
-                      border: '1px solid #eee'
-                    }}
+                    style={{ maxWidth: '100%', maxHeight: '200px', borderRadius: '8px', border: '1px solid #eee' }}
                   />
                 </div>
               )}
@@ -211,9 +216,56 @@ function Search() {
               <hr />
             </div>
             <div className="modal-footer">
-              <button className="btn-secondary" onClick={() => setRefugioSeleccionado(null)}>
-                Cerrar
-              </button>
+              <button className="btn-secondary" onClick={() => setRefugioSeleccionado(null)}>Cerrar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Para mostrar los detalles de la mascota*/}
+      {mascotaSeleccionada && (
+        <div className="modal-overlay" onClick={() => setMascotaSeleccionada(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={() => setMascotaSeleccionada(null)}>&times;</button>
+            
+            <div className="modal-header">
+              <h2>{mascotaSeleccionada.name}</h2>
+              <span className="location-badge-modal">{mascotaSeleccionada.species || 'Mascota'}</span>
+            </div>
+            
+            <div className="modal-body">
+              {mascotaSeleccionada.image && (
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                  <img
+                    src={mascotaSeleccionada.image}
+                    alt={`Foto de ${mascotaSeleccionada.name}`}
+                    style={{ maxWidth: '100%', maxHeight: '220px', borderRadius: '12px', objectFit: 'cover' }}
+                  />
+                </div>
+              )}
+              
+              <div className="modal-pet-details-grid">
+                <p><strong>🧬 Raza:</strong> {mascotaSeleccionada.breed || 'Mestizo'}</p>
+                <p><strong>⚧ Sexo:</strong> {mascotaSeleccionada.sex}</p>
+                <p><strong>🎂 Edad:</strong> {mascotaSeleccionada.age} {mascotaSeleccionada.age === 1 ? 'año' : 'años'}</p>
+                <p><strong>📏 Tamaño:</strong> {mascotaSeleccionada.size}</p>
+                
+                <p className="full-row"><strong>📅 Ingreso:</strong> {mascotaSeleccionada.arriveToShelterDate || 'No definida'}</p>
+                <p className="full-row"><strong>🧠 Temperamento:</strong> {mascotaSeleccionada.temperament || 'No definido'}</p>
+                <p className="full-row"><strong>🏠 Refugio:</strong> {mascotaSeleccionada.shelterName || 'Asociado'}</p>
+                <p className="full-row"><strong>🌲 Espacio requerido:</strong> {mascotaSeleccionada.requiredSpace || 'Asociado'}</p>
+                
+                {mascotaSeleccionada.specificRequirements && (
+                  <div className="requirements-box">
+                    <strong>⚠️ Requerimientos específicos:</strong>
+                    <p style={{ margin: '5px 0 0 0' }}>{mascotaSeleccionada.specificRequirements}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="modal-footer">
+              <button className="btn-secondary" onClick={() => setMascotaSeleccionada(null)}>Volver a la búsqueda</button>
             </div>
           </div>
         </div>

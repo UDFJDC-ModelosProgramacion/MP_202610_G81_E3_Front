@@ -1,11 +1,10 @@
-/*Contenedor principal. */
 .search-page-container {
   min-height: 100vh;
   background-color: #f8fafc;
   padding-bottom: 50px;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
-/* Degradado. */
 .search-hero-section {
   background: linear-gradient(135deg, #3A31D8 0%, #655ee6 100%);
   padding: 60px 20px;
@@ -13,7 +12,6 @@
   color: white;
 }
 
-/*Sombra texto*/
 .search-main-title {
   font-size: 2.5rem;
   font-weight: 800;
@@ -21,7 +19,6 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/*Barra de búsqueda.*/
 .search-controls-card {
   max-width: 800px;
   margin: 0 auto;
@@ -37,7 +34,6 @@
   gap: 10px;
 }
 
-/* Selector de refugios o mascotas.*/
 .search-type-select {
   padding: 12px 20px;
   border: none;
@@ -54,17 +50,11 @@
   color: #3A31D8;
 }
 
-/* Entrada de texto */
 .search-field-wrapper {
   flex-grow: 1;
   display: flex;
   align-items: center;
   padding-right: 20px;
-}
-
-.search-field-icon {
-  margin-right: 12px;
-  color: #94a3b8;
 }
 
 .search-main-input {
@@ -76,20 +66,11 @@
   color: #334055;
 }
 
-/* Contenedor de resultados */
+/* Layout */
 .search-results-container {
-  display: block;
   max-width: 1400px;
   margin: 30px auto 0;
   padding: 0 30px;
-}
-
-/* Grid de tarjetas */
-.shelter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  width: 100%;
 }
 
 .search-layout-with-filter {
@@ -108,7 +89,160 @@
   min-width: 0;
 }
 
-/*Mensajes en pantalla.*/
+.shelter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+/* Tarjeta de Shelter y Pet*/
+.shelter-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #eef2f6;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.shelter-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.card-header-visual {
+  height: 200px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.shelter-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.shelter-card:hover .shelter-photo {
+  transform: scale(1.08);
+}
+
+.location-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: white;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.card-body {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.shelter-name-title {
+  margin: 0 0 12px 0;
+  font-size: 1.2rem;
+  color: #1e293b;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.btn-main {
+  background: #3A31D8;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  width: 100%;
+  margin-top: auto;
+}
+
+.btn-main:hover {
+  background: #2a22b5;
+}
+
+/* Estilos para la carta de mascota */
+.pet-details-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.pet-info-line {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-width: 100%;
+}
+
+.pet-info-line strong {
+  color: #3A31D8;
+}
+
+.pet-info-line.text-muted {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.pet-badge-row {
+  display: flex;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.pet-mini-badge {
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+}
+
+.location-badge.species-perro,
+.location-badge.species-canino {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.location-badge.species-gato,
+.location-badge.species-felino {
+  background-color: #faf5ff;
+  color: #7c3aed;
+  border: 1px solid #e9d5ff;
+}
+
+/* Sistema de scroll */
 .loading-spinner, .no-results {
   text-align: center;
   padding: 50px;
@@ -125,68 +259,32 @@
   color: #7f8c8d;
 }
 
-.empty-icon {
-  font-size: 60px;
-  margin-bottom: 20px;
-}
-
-.empty-state h3 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-/* Para la ventana emergente. */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10000;
+  padding: 20px;
 }
 
+/* Caja contenedora base */
 .modal-content {
   background: white;
-  border-radius: 20px;
-  padding: 35px;
-  max-width: 500px;
-  width: 90%;
+  border-radius: 24px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  display: flex; 
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.modal-footer {
-  margin-top: 25px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* Boton de cerrar de la ventana emergente.*/
-.btn-secondary {
-  background-color: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
-  padding: 10px 24px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-secondary:hover {
-  background-color: #e2e8f0;
-  color: #1e293b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-}
-
-.btn-secondary:active {
-  transform: translateY(0);
-}
-
-/*Boton de X*/
 .close-button {
   position: absolute;
   top: 15px;
@@ -202,9 +300,7 @@
   cursor: pointer;
   color: #94a3b8;
   font-size: 24px;
-  font-weight: 300;
-  transition: background-color 0.25s ease, color 0.25s ease;
-  line-height: 1;
+  z-index: 10;
 }
 
 .close-button:hover {
@@ -212,18 +308,22 @@
   color: #475569;
 }
 
+/* Encabezados */
 .modal-header {
-  margin-bottom: 20px;
+  padding: 25px 30px 15px 30px;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 
 .modal-header h2 {
   color: #3A31D8;
   font-size: 1.8rem;
   font-weight: 800;
-  margin-bottom: 5px;
+  margin: 0 0 8px 0;
 }
 
 .location-badge-modal {
+  display: inline-block;
   background: #ede9fe;
   color: #3A31D8;
   padding: 4px 12px;
@@ -232,13 +332,66 @@
   font-weight: 600;
 }
 
-.modal-body p strong {
-  color: #3A31D8;
-  font-weight: 700;
+.modal-body {
+  padding: 20px 30px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
-.modal-body p {
+.modal-pet-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  line-height: 1.6;
+}
+
+.modal-pet-details-grid p.full-row {
+  grid-column: span 2;
+  margin: 0;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.modal-pet-details-grid p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* Requerimientos de la mascota */
+.requirements-box {
+  grid-column: span 2;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Pie del modal */
+.modal-footer {
+  padding: 15px 30px 25px 30px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.btn-secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
   color: #1e293b;
-  margin: 12px 0;
-  font-size: 1.05rem;
 }
