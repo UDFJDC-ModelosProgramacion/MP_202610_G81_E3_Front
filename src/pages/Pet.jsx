@@ -29,7 +29,7 @@ function Pet() {
           <div className="card-icon">✏️</div>
           <h3>Editar Detalles de Mascotas</h3>
           <p>Actualiza datos de cada mascota.</p>
-          <button className="btn-action">Editar</button>
+          <button className="btn-action"onClick={() => navigate('/mascotas/editar')}>Editar</button>
         </div>
 
         {/* Opción Eliminar */}

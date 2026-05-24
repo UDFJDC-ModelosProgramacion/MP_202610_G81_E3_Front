@@ -18,6 +18,7 @@ import GestionAdopciones from './pages/GestionAdopciones';
 import RegistroDevolucion from './pages/RegistroDevolucion';
 import EditShelter from './pages/EditShelter.jsx';
 import ActualizarMascota from './pages/ActualizarMascota.jsx';
+import SeleccionarMascota from './pages/SeleccionarMascota.jsx';
 
 // Para mostrar en el incio.
 function Home() {
@@ -141,6 +142,9 @@ function App() {
 
             {/*Ruta para editar datos del refugio*/}
             <Route path="/editar_refugio" element={<EditShelter />} />
+
+            <Route path="/mascotas/editar"        element={<SeleccionarMascota />} />
+            <Route path="/mascotas/:id/editar"    element={<ActualizarMascota />} />
           </Routes>
         </main>
       </div>
