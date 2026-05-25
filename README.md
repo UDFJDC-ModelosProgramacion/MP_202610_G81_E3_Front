@@ -19,3 +19,7 @@ URL:
 ## Detener el contenedor: 
 
 ```docker-compose down```
+
+## Video youtube
+
+https://www.youtube.com/watch?v=8tWdynVeW3w
