@@ -32,6 +32,10 @@ class TopBar extends Component {
                             </li>
 
                             <li>
+                            <Link to="/messages" className="nav-links">Mensajes</Link>
+                            </li>
+
+                            <li>
                             <Link to="/buscar" className="nav-search-link">
                                 <span className="search-icon">🔍</span>
                             </Link>

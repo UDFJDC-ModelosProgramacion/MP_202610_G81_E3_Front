@@ -13,7 +13,6 @@ const SearchFilter = ({ onSearch }) => {
             { id: 3, name: 'Cachorros' },  // 0 - 2 años
             { id: 4, name: 'Jovenes' },  // 2 - 5 años
             { id: 5, name: 'Adultos' },  // 5 - 10 años
-            { id: 6, name: 'Senior' },
         ],
         tamanio: [
             { id: 5, name: 'Pequeño' },
