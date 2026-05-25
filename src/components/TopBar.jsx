@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import "../css/TopBar.css";
-import logoHuella from '../assets/huella.png';
+import logoHuella from '../assets/huella.png'
 
 class TopBar extends Component {
-    
-    // Función para borrar el localStorage y cerrar sesión
+
+    // Función para limpiar la sesión y redirigir limpiamente
     handleLogout = () => {
-        localStorage.clear(); // Borra clientId, clientName y role
-        alert("Sesión cerrada correctamente");
-        window.location.href = "/"; // Redirige al inicio
+        localStorage.clear();
+        window.location.href = "/"; 
     };
 
     render() {
-        // Revisamos si hay un usuario logueado actualmente en el navegador
-        const isLoggedIn = localStorage.getItem('clientId') !== null;
-        const clientName = localStorage.getItem('clientName') || "Usuario";
+        // Leemos las llaves del localStorage en cada ciclo de renderizado
+        const loggedInId = localStorage.getItem('clientId');
+        const loggedInName = localStorage.getItem('clientName') || "Usuario";
 
         return (
             <div id="top-bar">
@@ -28,7 +27,7 @@ class TopBar extends Component {
                         </Link>
                     </div>
 
-                    {/* Lista para redirigir a las paginas */}
+                    {/* Lista para redirigir a las paginas (Respetando los cambios remotos) */}
                     <ul className="navbar-links">
                         <li>
                             <Link to="/" className="nav-links">Inicio</Link>
@@ -43,31 +42,33 @@ class TopBar extends Component {
                         </li>
 
                         <li>
+                            <Link to="/messages" className="nav-links">Mensajes</Link>
+                        </li>
+
+                        <li>
                             <Link to="/buscar" className="nav-search-link">
                                 <span className="search-icon">🔍</span>
                             </Link>
                         </li>
                     </ul>
 
-                    {/* Sección de autenticación dinámica */}
+                    {/* Lógica de Autenticación Integrada */}
                     <div className="navbar-auth">
-                        {isLoggedIn ? (
-                            // SI EL USUARIO YA INICIÓ SESIÓN: Muestra su Perfil y Cerrar Sesión
-                            <>
-                                <Link to="/perfil" className="nav-links" style={{ marginRight: '15px', fontWeight: '500' }}>
-                                    👤 ¡Hola, {clientName.split(' ')[0]}!
+                        {loggedInId ? (
+                            // Si el usuario está logueado, ve su nombre y acceso a su perfil
+                            <div className="user-logged-nav" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <Link to="/perfil" className="nav-links" style={{ fontWeight: 'bold' }}>
+                                    👤 {loggedInName}
                                 </Link>
                                 <button className="btn-login" onClick={this.handleLogout}>
                                     Cerrar Sesión
                                 </button>
-                            </>
+                            </div>
                         ) : (
-                            // SI NO HA INICIADO SESIÓN: Muestra los botones clásicos conectados
+                            // Si no hay sesión, se conservan los botones originales de tus compañeros
                             <>
                                 <button className="btn-registro">Registrarse</button>
-                                <Link to="/login">
-                                    <button className="btn-login">Iniciar Sesión</button>
-                                </Link>
+                                <button className="btn-login">Iniciar Sesión</button>
                             </>
                         )}
                     </div>
