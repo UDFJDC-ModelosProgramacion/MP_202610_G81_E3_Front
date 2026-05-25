@@ -1,0 +1,10 @@
+/* css/MessagesPage.css */
+
+.messages-page {
+    display: flex;
+    height: calc(100vh - 64px); /* ajusta 64px según la altura de tu TopBar */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
