@@ -10,7 +10,7 @@ pipeline {
 
         stage('Execute Tests & Coverage') {
             steps {
-                bat 'npm run test:coverage' 
+                bat 'npm run test:coverage'
             }
         }
 
@@ -21,7 +21,7 @@ pipeline {
                     npx sonar-scanner ^
                     -Dsonar.projectKey=react-app ^
                     -Dsonar.sources=src ^
-                    -Dsonar.tests=cypress ^
+                    -Dsonar.tests=src/tests ^
                     -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
                     '''
                 }
