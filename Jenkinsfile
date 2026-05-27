@@ -22,6 +22,7 @@ pipeline {
                     -Dsonar.projectKey=react-app ^
                     -Dsonar.sources=src ^
                     -Dsonar.tests=src/tests ^
+                    -Dsonar.exclusions=src/tests/** ^
                     -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
                     '''
                 }
