@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import ActualizarMascota from '../pages/ActualizarMascota';
 
-// Mocks.
 vi.mock('../services/petService.js', () => ({
     petService: {
         obtenerPorId: vi.fn(),
@@ -69,7 +68,6 @@ vi.mock('react-router-dom', async () => {
 
 import { petService } from '../services/petService.js';
 
-// Datos de prueba.
 const petMock = {
     name: 'Bruno',
     species: 'Perro',
@@ -99,14 +97,13 @@ describe('ActualizarMascota', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.useFakeTimers();
+        vi.useFakeTimers({ shouldAdvanceTime: true });
     });
 
     afterEach(() => {
         vi.useRealTimers();
     });
 
-    // Renderizado inicial y carga de datos.
     describe('Carga inicial', () => {
 
         it('muestra el spinner de carga mientras obtiene la mascota', () => {
@@ -182,7 +179,6 @@ describe('ActualizarMascota', () => {
         });
     });
 
-    // Validaciones del formulario.
     describe('Validaciones del formulario', () => {
 
         const setupForm = async () => {
@@ -248,7 +244,6 @@ describe('ActualizarMascota', () => {
         });
     });
 
-    // Envío del formulario.
     describe('Envío del formulario', () => {
 
         const setupForm = async () => {
@@ -347,7 +342,6 @@ describe('ActualizarMascota', () => {
         });
     });
 
-    // Navegación.
     describe('Navegación', () => {
 
         it('navega hacia atrás al hacer clic en Cancelar', async () => {
