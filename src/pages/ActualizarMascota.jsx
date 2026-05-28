@@ -12,7 +12,7 @@ import {
 } from "../components/PetForm";
 import "../css/ActualizarMascota.css";
 
-// ─── Opciones de los selects ───────────────────────────────────────────────
+// ─── Opciones de los selects 
 const SPECIES_OPTIONS = [
   { value: "Perro", label: "Perro" },
   { value: "Gato", label: "Gato" },
@@ -42,7 +42,7 @@ const TEMPERAMENT_OPTIONS = [
   { value: "Independiente", label: "Independiente" },
 ];
 
-// ─── Estado inicial del formulario ────────────────────────────────────────
+// ─── Estado inicial del formulario 
 const INITIAL_FORM = {
   name: "",
   species: "",
@@ -54,7 +54,7 @@ const INITIAL_FORM = {
   specificRequirements: "",
 };
 
-// ─── Validaciones ──────────────────────────────────────────────────────────
+// ─── Validaciones 
 const validate = (form) => {
   const errors = {};
   if (!form.name.trim()) errors.name = "El nombre es obligatorio.";
@@ -64,7 +64,7 @@ const validate = (form) => {
   return errors;
 };
 
-// ─── Componente principal ──────────────────────────────────────────────────
+// ─── Componente principal 
 export default function ActualizarMascota() {
   const { id } = useParams();           // /mascotas/:id/editar
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ export default function ActualizarMascota() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // ── Carga inicial de la mascota ──────────────────────────────────────────
+  // ── Carga inicial de la mascota 
   const loadPet = useCallback(async () => {
     try {
       setLoading(true);
@@ -103,7 +103,7 @@ export default function ActualizarMascota() {
     loadPet();
   }, [loadPet]);
 
-  // ── Manejador de cambios ─────────────────────────────────────────────────
+  // ── Manejador de cambios 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -111,7 +111,7 @@ export default function ActualizarMascota() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  // ── Envío del formulario ─────────────────────────────────────────────────
+  // ── Envío del formulario 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: null, message: "" });
@@ -139,7 +139,7 @@ export default function ActualizarMascota() {
     }
   };
 
-  // ── Renderizado ──────────────────────────────────────────────────────────
+  // ── Renderizado 
   if (loading) {
     return (
       <div className="am-loading">
