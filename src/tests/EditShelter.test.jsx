@@ -1,10 +1,9 @@
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import EditShelter from '../pages/EditShelter';
 
-// Mocks.
 vi.mock('../services/ShelterService', () => ({
     shelterService: {
         getShelters: vi.fn(),
@@ -23,7 +22,6 @@ vi.mock('../css/EditShelter.css', () => ({}));
 
 import { shelterService } from '../services/ShelterService';
 
-// Datos de prueba.
 const sheltersMock = [
     { id: 1, name: 'Huellitas' },
     { id: 2, name: 'Patitas Felices' },
@@ -38,7 +36,6 @@ const shelterDetailMock = {
     image: 'data:image/png;base64,abc123',
 };
 
-// Helpers.
 const renderComponent = () =>
     render(
         <MemoryRouter>
@@ -48,11 +45,10 @@ const renderComponent = () =>
 
 const getInput = (name) => document.querySelector(`input[name="${name}"]`);
 
-const selectShelter = async () => {
+const selectShelter = async (user) => {
     await waitFor(() => screen.getByText('Huellitas'));
     const select = screen.getAllByRole('combobox')[0];
-    await userEvent.selectOptions(select, '1');
-
+    await user.selectOptions(select, '1');
     await waitFor(() => {
         expect(getInput('name').value).toBe('Huellitas');
     });
@@ -60,8 +56,11 @@ const selectShelter = async () => {
 
 describe('EditShelter', () => {
 
+    let user;
+
     beforeEach(() => {
         vi.clearAllMocks();
+        user = userEvent.setup();
         shelterService.getShelters.mockResolvedValue({
             success: true,
             shelters: sheltersMock,
@@ -98,12 +97,11 @@ describe('EditShelter', () => {
         });
     });
 
-    // Eleccion de refugio.
     describe('Selección de refugio', () => {
 
         it('carga los datos del refugio al seleccionarlo', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
             expect(getInput('name').value).toBe('Huellitas');
             expect(getInput('city').value).toBe('Bogotá');
@@ -113,7 +111,7 @@ describe('EditShelter', () => {
 
         it('muestra la imagen actual del refugio al seleccionarlo', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
             const img = screen.getByAltText('Vista previa del refugio');
             expect(img).toBeInTheDocument();
@@ -122,21 +120,20 @@ describe('EditShelter', () => {
 
         it('habilita el botón Guardar Cambios al seleccionar un refugio', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
             expect(screen.getByRole('button', { name: /guardar cambios/i })).not.toBeDisabled();
         });
     });
 
-    // Validaciones.
     describe('Validaciones del formulario', () => {
 
         it('muestra error si el nombre está vacío al enviar', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
-            await userEvent.clear(getInput('name'));
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await user.clear(getInput('name'));
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('El nombre es obligatorio.')).toBeInTheDocument()
@@ -145,10 +142,10 @@ describe('EditShelter', () => {
 
         it('muestra error si la ciudad está vacía al enviar', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
-            await userEvent.clear(getInput('city'));
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await user.clear(getInput('city'));
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('La ciudad es obligatoria.')).toBeInTheDocument()
@@ -157,10 +154,10 @@ describe('EditShelter', () => {
 
         it('muestra error si la dirección está vacía al enviar', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
-            await userEvent.clear(getInput('address'));
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await user.clear(getInput('address'));
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('La dirección es obligatoria.')).toBeInTheDocument()
@@ -169,10 +166,10 @@ describe('EditShelter', () => {
 
         it('muestra error si el correo está vacío al enviar', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
-            await userEvent.clear(getInput('email'));
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await user.clear(getInput('email'));
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('El correo es obligatorio.')).toBeInTheDocument()
@@ -181,17 +178,17 @@ describe('EditShelter', () => {
 
         it('limpia el error del campo cuando el usuario empieza a escribir', async () => {
             renderComponent();
-            await selectShelter();
+            await selectShelter(user);
 
             const nameInput = getInput('name');
-            await userEvent.clear(nameInput);
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await user.clear(nameInput);
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('El nombre es obligatorio.')).toBeInTheDocument()
             );
 
-            await userEvent.type(nameInput, 'N');
+            await user.type(nameInput, 'N');
 
             await waitFor(() =>
                 expect(screen.queryByText('El nombre es obligatorio.')).not.toBeInTheDocument()
@@ -199,15 +196,14 @@ describe('EditShelter', () => {
         });
     });
 
-    // Enviar formulario.
     describe('Envío del formulario', () => {
 
         it('muestra mensaje de éxito al actualizar correctamente', async () => {
             shelterService.updateShelter.mockResolvedValue({ ok: true, data: shelterDetailMock });
 
             renderComponent();
-            await selectShelter();
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await selectShelter(user);
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText(/se ha actualizado el refugio/i)).toBeInTheDocument()
@@ -221,8 +217,8 @@ describe('EditShelter', () => {
             });
 
             renderComponent();
-            await selectShelter();
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await selectShelter(user);
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('Ya existe un refugio con ese nombre.')).toBeInTheDocument()
@@ -236,8 +232,8 @@ describe('EditShelter', () => {
             });
 
             renderComponent();
-            await selectShelter();
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await selectShelter(user);
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('Ya existe un refugio con ese correo.')).toBeInTheDocument()
@@ -248,8 +244,8 @@ describe('EditShelter', () => {
             shelterService.updateShelter.mockRejectedValue(new Error('Network error'));
 
             renderComponent();
-            await selectShelter();
-            await userEvent.click(screen.getByRole('button', { name: /guardar cambios/i }));
+            await selectShelter(user);
+            await user.click(screen.getByRole('button', { name: /guardar cambios/i }));
 
             await waitFor(() =>
                 expect(screen.getByText('Error: No se pudo conectar con el servidor.')).toBeInTheDocument()
@@ -257,32 +253,23 @@ describe('EditShelter', () => {
         });
     });
 
-    // Navegar.
     describe('Navegación', () => {
 
         it('navega hacia atrás al hacer clic en Cancelar', async () => {
             renderComponent();
-            await userEvent.click(screen.getByRole('button', { name: /cancelar/i }));
+            await user.click(screen.getByRole('button', { name: /cancelar/i }));
             expect(mockNavigate).toHaveBeenCalledWith(-1);
         });
     });
 
-    // Carga de fotos.
     describe('Carga de imagen', () => {
 
         it('muestra preview al cargar una imagen desde archivo', async () => {
             const mockResult = 'data:image/png;base64,nuevaimagen123';
 
             class MockFileReader {
-                constructor() {
-                    this.result = mockResult;
-                    this.onloadend = null;
-                }
-                readAsDataURL() {
-                    setTimeout(() => {
-                        this.onloadend && this.onloadend();
-                    }, 0);
-                }
+                constructor() { this.result = mockResult; this.onloadend = null; }
+                readAsDataURL() { setTimeout(() => this.onloadend && this.onloadend(), 0); }
             }
             vi.stubGlobal('FileReader', MockFileReader);
 

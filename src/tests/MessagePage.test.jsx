@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import MessagesPage from '../pages/MessagesPage';
 
-// Mocks.
 vi.mock('../services/ShelterService.js', () => ({
     shelterService: {
         getShelters: vi.fn(),
@@ -50,7 +49,6 @@ vi.mock('../components/ChatArea', () => ({
 import { shelterService } from '../services/ShelterService.js';
 import { mensajesService } from '../services/MessagesService.js';
 
-// Datos de prueba.
 const sheltersMock = [
     { id: 1, name: 'Huellitas' },
     { id: 2, name: 'Patitas Felices' },
@@ -70,11 +68,13 @@ const renderComponent = () =>
 
 describe('MessagesPage', () => {
 
+    let user;
+
     beforeEach(() => {
         vi.clearAllMocks();
+        user = userEvent.setup();
     });
 
-    // Renderizado inicial.
     describe('Renderizado inicial', () => {
 
         it('muestra el Sidebar y el ChatArea', () => {
@@ -108,7 +108,6 @@ describe('MessagesPage', () => {
         });
     });
 
-    // Manejo de errores al cargar refugios.
     describe('Manejo de errores', () => {
 
         it('muestra el mensaje de error si getShelters falla', async () => {
@@ -136,7 +135,6 @@ describe('MessagesPage', () => {
         });
     });
 
-    // Selección de refugio.
     describe('Selección de refugio', () => {
 
         it('llama a mensajesService.getMessages al seleccionar un refugio', async () => {
@@ -146,7 +144,7 @@ describe('MessagesPage', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
 
             await waitFor(() => {
                 expect(mensajesService.getMessages).toHaveBeenCalledTimes(1);
@@ -160,7 +158,7 @@ describe('MessagesPage', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
 
             await waitFor(() => {
                 expect(screen.getByTestId('chat-title')).toHaveTextContent('Huellitas');
@@ -174,7 +172,7 @@ describe('MessagesPage', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
 
             await waitFor(() => {
                 const mensajes = screen.getAllByTestId('message');
@@ -194,10 +192,10 @@ describe('MessagesPage', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
             await waitFor(() => expect(screen.getAllByTestId('message')).toHaveLength(2));
 
-            await userEvent.click(screen.getByText('Patitas Felices'));
+            await user.click(screen.getByText('Patitas Felices'));
             await waitFor(() => {
                 expect(screen.queryByTestId('message')).not.toBeInTheDocument();
             });
@@ -210,7 +208,7 @@ describe('MessagesPage', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
 
             await waitFor(() => {
                 expect(screen.queryByTestId('message')).not.toBeInTheDocument();
@@ -218,16 +216,15 @@ describe('MessagesPage', () => {
         });
     });
 
-    // Envío de mensajes.
     describe('Envío de mensajes', () => {
 
-        const setupWithShelterSelected = async () => {
+        const setupWithShelterSelected = async (user) => {
             shelterService.getShelters.mockResolvedValue({ success: true, shelters: sheltersMock });
             mensajesService.getMessages.mockResolvedValue({ success: true, messages: [] });
 
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
-            await userEvent.click(screen.getByText('Huellitas'));
+            await user.click(screen.getByText('Huellitas'));
             await waitFor(() => expect(mensajesService.getMessages).toHaveBeenCalled());
         };
 
@@ -237,8 +234,8 @@ describe('MessagesPage', () => {
                 message: { id: 10, text: 'Hola refugio' },
             });
 
-            await setupWithShelterSelected();
-            await userEvent.click(screen.getByText('Enviar'));
+            await setupWithShelterSelected(user);
+            await user.click(screen.getByText('Enviar'));
 
             await waitFor(() => {
                 expect(mensajesService.createMessage).toHaveBeenCalledWith({ text: 'Hola refugio' });
@@ -251,8 +248,8 @@ describe('MessagesPage', () => {
                 message: { id: 10, text: 'Hola refugio' },
             });
 
-            await setupWithShelterSelected();
-            await userEvent.click(screen.getByText('Enviar'));
+            await setupWithShelterSelected(user);
+            await user.click(screen.getByText('Enviar'));
 
             await waitFor(() => {
                 const mensajes = screen.getAllByTestId('message');
@@ -263,8 +260,8 @@ describe('MessagesPage', () => {
         it('no agrega mensaje si createMessage falla', async () => {
             mensajesService.createMessage.mockResolvedValue({ success: false });
 
-            await setupWithShelterSelected();
-            await userEvent.click(screen.getByText('Enviar'));
+            await setupWithShelterSelected(user);
+            await user.click(screen.getByText('Enviar'));
 
             await waitFor(() => {
                 expect(screen.queryByTestId('message')).not.toBeInTheDocument();
@@ -276,9 +273,9 @@ describe('MessagesPage', () => {
                 .mockResolvedValueOnce({ success: true, message: { id: 10, text: 'Hola refugio' } })
                 .mockResolvedValueOnce({ success: true, message: { id: 11, text: 'Hola refugio' } });
 
-            await setupWithShelterSelected();
-            await userEvent.click(screen.getByText('Enviar'));
-            await userEvent.click(screen.getByText('Enviar'));
+            await setupWithShelterSelected(user);
+            await user.click(screen.getByText('Enviar'));
+            await user.click(screen.getByText('Enviar'));
 
             await waitFor(() => {
                 expect(screen.getAllByTestId('message')).toHaveLength(2);

@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router-dom';
 import React from 'react';
 import Search from '../pages/Search';
 
-// Mocks.
 vi.mock('../services/petService', () => ({
     petService: {
         obtenerTodas: vi.fn(),
@@ -47,7 +46,6 @@ vi.mock('../css/Search.css', () => ({}));
 
 import { petService } from '../services/petService';
 
-// Datos de prueba.
 const sheltersMock = [
     { id: 1, name: 'Huellitas', city: 'Bogotá', email: 'h@test.com', address: 'Calle 1', image: '' },
     { id: 2, name: 'Patitas Felices', city: 'Medellín', email: 'p@test.com', address: 'Calle 2', image: '' },
@@ -67,14 +65,17 @@ const renderComponent = () =>
 
 describe('Search Component Tests', () => {
 
+    let user;
+
     beforeEach(() => {
         vi.clearAllMocks();
-        
+        user = userEvent.setup();
+
         global.fetch = vi.fn().mockResolvedValue({
             ok: true,
             json: async () => sheltersMock,
         });
-        
+
         petService.obtenerTodas.mockResolvedValue(petsMock);
     });
 
@@ -117,14 +118,14 @@ describe('Search Component Tests', () => {
         it('cambia el placeholder al cambiar a Mascotas', async () => {
             renderComponent();
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             expect(screen.getByPlaceholderText(/buscar mascota/i)).toBeInTheDocument();
         });
 
         it('muestra el filtro lateral al cambiar a Mascotas', async () => {
             renderComponent();
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             await waitFor(() =>
                 expect(screen.getByTestId('search-filter')).toBeInTheDocument()
             );
@@ -133,7 +134,7 @@ describe('Search Component Tests', () => {
         it('carga mascotas al cambiar a tipo Mascota', async () => {
             renderComponent();
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             await waitFor(() => {
                 expect(screen.getByText('Bruno')).toBeInTheDocument();
                 expect(screen.getByText('Michi')).toBeInTheDocument();
@@ -143,7 +144,7 @@ describe('Search Component Tests', () => {
         it('muestra tarjetas de mascota al cambiar a tipo Mascota', async () => {
             renderComponent();
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             await waitFor(() => {
                 expect(screen.getAllByTestId('pet-card').length).toBe(2);
             });
@@ -154,7 +155,7 @@ describe('Search Component Tests', () => {
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
 
             await waitFor(() =>
                 expect(screen.queryAllByTestId('shelter-card').length).toBe(0)
@@ -174,7 +175,7 @@ describe('Search Component Tests', () => {
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
             const input = screen.getByPlaceholderText(/buscar refugio/i);
-            await userEvent.type(input, 'Huellitas');
+            await user.type(input, 'Huellitas');
 
             await waitFor(() => {
                 expect(global.fetch).toHaveBeenCalledWith(
@@ -192,7 +193,7 @@ describe('Search Component Tests', () => {
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
             const input = screen.getByPlaceholderText(/buscar refugio/i);
-            await userEvent.type(input, 'XYZ');
+            await user.type(input, 'XYZ');
 
             await waitFor(() =>
                 expect(screen.getByText(/no se encontraron resultados/i)).toBeInTheDocument()
@@ -229,19 +230,19 @@ describe('Search Component Tests', () => {
 
     describe('Búsqueda de mascotas', () => {
 
-        const switchToMascotas = async () => {
+        const switchToMascotas = async (user) => {
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             await waitFor(() => expect(screen.getAllByTestId('pet-card').length).toBe(2));
         };
 
         it('llama a buscarPorNombre al escribir en modo Mascota', async () => {
             petService.buscarPorNombre.mockResolvedValue([petsMock[0]]);
             renderComponent();
-            await switchToMascotas();
+            await switchToMascotas(user);
 
             const input = screen.getByPlaceholderText(/buscar mascota/i);
-            await userEvent.type(input, 'Bruno');
+            await user.type(input, 'Bruno');
 
             await waitFor(() =>
                 expect(petService.buscarPorNombre).toHaveBeenCalledWith('Bruno')
@@ -251,9 +252,9 @@ describe('Search Component Tests', () => {
         it('llama a buscarPorFiltros al aplicar filtros sin keyword', async () => {
             petService.buscarPorFiltros.mockResolvedValue([petsMock[0]]);
             renderComponent();
-            await switchToMascotas();
+            await switchToMascotas(user);
 
-            await userEvent.click(screen.getByText('Filtrar Perros'));
+            await user.click(screen.getByText('Filtrar Perros'));
 
             await waitFor(() =>
                 expect(petService.buscarPorFiltros).toHaveBeenCalledWith(['Perro'])
@@ -264,13 +265,13 @@ describe('Search Component Tests', () => {
             petService.buscarPorNombre.mockResolvedValue([petsMock[0]]);
             petService.buscar.mockResolvedValue([petsMock[0]]);
             renderComponent();
-            await switchToMascotas();
+            await switchToMascotas(user);
 
             const input = screen.getByPlaceholderText(/buscar mascota/i);
-            await userEvent.type(input, 'Bruno');
+            await user.type(input, 'Bruno');
             await waitFor(() => expect(petService.buscarPorNombre).toHaveBeenCalled());
 
-            await userEvent.click(screen.getByText('Filtrar Perros'));
+            await user.click(screen.getByText('Filtrar Perros'));
 
             await waitFor(() =>
                 expect(petService.buscar).toHaveBeenCalledWith('Bruno', ['Perro'])
@@ -282,7 +283,7 @@ describe('Search Component Tests', () => {
             renderComponent();
 
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
 
             await waitFor(() =>
                 expect(screen.getByText(/no hay mascotas registrados en el sistema/i)).toBeInTheDocument()
@@ -296,7 +297,7 @@ describe('Search Component Tests', () => {
             renderComponent();
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
-            await userEvent.click(screen.getAllByText('Ver más')[0]);
+            await user.click(screen.getAllByText('Ver más')[0]);
 
             await waitFor(() =>
                 expect(screen.getByText('📧 Correo:')).toBeInTheDocument()
@@ -307,10 +308,10 @@ describe('Search Component Tests', () => {
             renderComponent();
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
-            await userEvent.click(screen.getAllByText('Ver más')[0]);
+            await user.click(screen.getAllByText('Ver más')[0]);
             await waitFor(() => expect(screen.getByText('Cerrar')).toBeInTheDocument());
 
-            await userEvent.click(screen.getByText('Cerrar'));
+            await user.click(screen.getByText('Cerrar'));
             await waitFor(() =>
                 expect(screen.queryByText('Cerrar')).not.toBeInTheDocument()
             );
@@ -320,11 +321,11 @@ describe('Search Component Tests', () => {
             renderComponent();
             await waitFor(() => expect(screen.getAllByTestId('shelter-card').length).toBe(2));
 
-            await userEvent.click(screen.getAllByText('Ver más')[0]);
+            await user.click(screen.getAllByText('Ver más')[0]);
             await waitFor(() => expect(screen.getByText('Cerrar')).toBeInTheDocument());
 
             const overlay = document.querySelector('.modal-overlay');
-            await userEvent.click(overlay);
+            await user.click(overlay);
 
             await waitFor(() =>
                 expect(screen.queryByText('Cerrar')).not.toBeInTheDocument()
@@ -334,17 +335,17 @@ describe('Search Component Tests', () => {
 
     describe('Modal de mascota', () => {
 
-        const switchToMascotas = async () => {
+        const switchToMascotas = async (user) => {
             const select = screen.getByRole('combobox');
-            await userEvent.selectOptions(select, 'Mascota');
+            await user.selectOptions(select, 'Mascota');
             await waitFor(() => expect(screen.getAllByTestId('pet-card').length).toBe(2));
         };
 
         it('abre el modal al hacer clic en Ver más de una mascota', async () => {
             renderComponent();
-            await switchToMascotas();
+            await switchToMascotas(user);
 
-            await userEvent.click(screen.getAllByText('Ver más')[0]);
+            await user.click(screen.getAllByText('Ver más')[0]);
 
             await waitFor(() =>
                 expect(screen.getByText('Volver a la búsqueda')).toBeInTheDocument()
@@ -353,12 +354,12 @@ describe('Search Component Tests', () => {
 
         it('cierra el modal al hacer clic en Volver a la búsqueda', async () => {
             renderComponent();
-            await switchToMascotas();
+            await switchToMascotas(user);
 
-            await userEvent.click(screen.getAllByText('Ver más')[0]);
+            await user.click(screen.getAllByText('Ver más')[0]);
             await waitFor(() => expect(screen.getByText('Volver a la búsqueda')).toBeInTheDocument());
 
-            await userEvent.click(screen.getByText('Volver a la búsqueda'));
+            await user.click(screen.getByText('Volver a la búsqueda'));
             await waitFor(() =>
                 expect(screen.queryByText('Volver a la búsqueda')).not.toBeInTheDocument()
             );

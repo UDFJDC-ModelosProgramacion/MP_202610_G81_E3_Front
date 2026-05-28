@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import SeleccionarMascota from '../pages/SeleccionarMascota';
 
-// Mocks.
 vi.mock('../services/petService.js', () => ({
     petService: {
         obtenerTodas: vi.fn(),
@@ -30,7 +29,6 @@ vi.mock('react-router-dom', async () => {
 
 import { petService } from '../services/petService.js';
 
-// Datos de prueba.
 const mascotasMock = [
     { id: 1, name: 'Bruno' },
     { id: 2, name: 'Luna' },
@@ -48,11 +46,13 @@ const getSearchInput = () => screen.getByPlaceholderText(/buscar por nombre/i);
 
 describe('SeleccionarMascota', () => {
 
+    let user;
+
     beforeEach(() => {
         vi.clearAllMocks();
+        user = userEvent.setup();
     });
 
-    // Renderizado inicial y carga de datos.
     describe('Carga inicial', () => {
 
         it('muestra el spinner mientras carga las mascotas', () => {
@@ -105,16 +105,13 @@ describe('SeleccionarMascota', () => {
         });
     });
 
-    // Manejo de errores.
     describe('Manejo de errores', () => {
 
         it('muestra mensaje de error si obtenerTodas falla', async () => {
             petService.obtenerTodas.mockRejectedValue(new Error('Fallo de red'));
             renderComponent();
             await waitFor(() => {
-                expect(
-                    screen.getByText(/no se pudieron cargar las mascotas/i)
-                ).toBeInTheDocument();
+                expect(screen.getByText(/no se pudieron cargar las mascotas/i)).toBeInTheDocument();
             });
         });
 
@@ -135,7 +132,6 @@ describe('SeleccionarMascota', () => {
         });
     });
 
-    // Contador de mascotas.
     describe('Contador de mascotas', () => {
 
         it('muestra el total de mascotas registradas sin filtro activo', async () => {
@@ -151,12 +147,11 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'B');
+            await user.type(getSearchInput(), 'B');
             expect(screen.getByText('1 de 3 mascotas')).toBeInTheDocument();
         });
     });
 
-    // Filtrado por nombre.
     describe('Búsqueda y filtrado', () => {
 
         it('muestra el input de búsqueda', async () => {
@@ -172,7 +167,7 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'Luna');
+            await user.type(getSearchInput(), 'Luna');
             expect(screen.getAllByTestId('pet-card')).toHaveLength(1);
             expect(screen.getByText('Luna')).toBeInTheDocument();
         });
@@ -182,7 +177,7 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'luna');
+            await user.type(getSearchInput(), 'luna');
             expect(screen.getByText('Luna')).toBeInTheDocument();
         });
 
@@ -191,11 +186,9 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'XYZ');
+            await user.type(getSearchInput(), 'XYZ');
             expect(screen.queryByTestId('pet-card')).not.toBeInTheDocument();
-            expect(
-                screen.getByText(/no se encontraron mascotas con ese nombre/i)
-            ).toBeInTheDocument();
+            expect(screen.getByText(/no se encontraron mascotas con ese nombre/i)).toBeInTheDocument();
         });
 
         it('muestra el botón limpiar cuando hay texto en el buscador', async () => {
@@ -203,7 +196,7 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'Bruno');
+            await user.type(getSearchInput(), 'Bruno');
             expect(screen.getByLabelText('Limpiar')).toBeInTheDocument();
         });
 
@@ -220,10 +213,10 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'Bruno');
+            await user.type(getSearchInput(), 'Bruno');
             expect(screen.getAllByTestId('pet-card')).toHaveLength(1);
 
-            await userEvent.click(screen.getByLabelText('Limpiar'));
+            await user.click(screen.getByLabelText('Limpiar'));
             expect(getSearchInput().value).toBe('');
             expect(screen.getAllByTestId('pet-card')).toHaveLength(3);
         });
@@ -233,15 +226,14 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getByPlaceholderText(/buscar por nombre/i));
 
-            await userEvent.type(getSearchInput(), 'Luna');
+            await user.type(getSearchInput(), 'Luna');
             expect(screen.getAllByTestId('pet-card')).toHaveLength(1);
 
-            await userEvent.clear(getSearchInput());
+            await user.clear(getSearchInput());
             expect(screen.getAllByTestId('pet-card')).toHaveLength(3);
         });
     });
 
-    // Navegación al seleccionar mascota.
     describe('Selección de mascota', () => {
 
         it('navega a /mascotas/:id/editar al hacer clic en Ver detalles', async () => {
@@ -249,7 +241,7 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getAllByText('Ver detalles'));
 
-            await userEvent.click(screen.getAllByText('Ver detalles')[0]);
+            await user.click(screen.getAllByText('Ver detalles')[0]);
             expect(mockNavigate).toHaveBeenCalledWith('/mascotas/1/editar');
         });
 
@@ -258,7 +250,7 @@ describe('SeleccionarMascota', () => {
             renderComponent();
             await waitFor(() => screen.getAllByText('Ver detalles'));
 
-            await userEvent.click(screen.getAllByText('Ver detalles')[1]);
+            await user.click(screen.getAllByText('Ver detalles')[1]);
             expect(mockNavigate).toHaveBeenCalledWith('/mascotas/2/editar');
         });
     });
