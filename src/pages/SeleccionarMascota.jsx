@@ -13,7 +13,7 @@ export default function SeleccionarMascota() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // ── Carga inicial ──────────────────────────────────────────────
+  // ── Carga inicial 
   useEffect(() => {
     const cargar = async () => {
       try {
@@ -29,17 +29,17 @@ export default function SeleccionarMascota() {
     cargar();
   }, []);
 
-  // ── Filtrado local por nombre ──────────────────────────────────
+  // ── Filtrado local por nombre 
   const mascotasFiltradas = mascotas.filter((m) =>
     m.name?.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  // ── Al hacer clic en "Ver detalles" → ir a editar ─────────────
+  // ── Al hacer clic en "Ver detalles" → ir a editar 
   const handleSeleccionar = (mascota) => {
     navigate(`/mascotas/${mascota.id}/editar`);
   };
 
-  // ── Renders de estado ─────────────────────────────────────────
+  // ── Renders de estado 
   if (loading) {
     return (
       <div className="sm-loading">
