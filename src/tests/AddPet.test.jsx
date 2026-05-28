@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import AddPet from '../pages/AddPet';
 
-// Mocks.
 vi.mock('../services/PetService.js', () => ({
     petService: {
         crear: vi.fn(),
@@ -19,7 +18,6 @@ vi.mock('react-router-dom', async () => {
 
 vi.mock('../css/AddPet.css', () => ({}));
 
-// Cargar refugios
 const sheltersMock = [
     { id: 1, name: 'Huellitas' },
     { id: 2, name: 'Patitas Felices' },
@@ -38,18 +36,17 @@ const getInput = (name) => document.querySelector(`input[name="${name}"]`);
 const getSelect = (name) => document.querySelector(`select[name="${name}"]`);
 const getTextarea = (name) => document.querySelector(`textarea[name="${name}"]`);
 
-// Llenar campos.
 const fillForm = async () => {
-    await userEvent.type(getInput('name'), 'Bruno');
-    await userEvent.selectOptions(getSelect('species'), 'Perro');
-    await userEvent.type(getInput('breed'), 'Labrador');
-    await userEvent.selectOptions(getSelect('sex'), 'Macho');
-    await userEvent.type(getInput('age'), '3');
-    await userEvent.selectOptions(getSelect('size'), 'Grande');
-    await userEvent.selectOptions(getSelect('requiredSpace'), 'Casa');
-    await userEvent.type(getInput('arriveToShelterDate'), '2024-01-15');
-    await userEvent.type(getInput('temperament'), 'Tranquilo');
-    await userEvent.type(getTextarea('specificRequirements'), 'Ninguno');
+    fireEvent.change(getInput('name'),                  { target: { value: 'Bruno' } });
+    fireEvent.change(getSelect('species'),              { target: { value: 'Perro' } });
+    fireEvent.change(getInput('breed'),                 { target: { value: 'Labrador' } });
+    fireEvent.change(getSelect('sex'),                  { target: { value: 'Macho' } });
+    fireEvent.change(getInput('age'),                   { target: { value: '3' } });
+    fireEvent.change(getSelect('size'),                 { target: { value: 'Grande' } });
+    fireEvent.change(getSelect('requiredSpace'),        { target: { value: 'Casa' } });
+    fireEvent.change(getInput('arriveToShelterDate'),   { target: { value: '2024-01-15' } });
+    fireEvent.change(getInput('temperament'),           { target: { value: 'Tranquilo' } });
+    fireEvent.change(getTextarea('specificRequirements'), { target: { value: 'Ninguno' } });
 };
 
 describe('AddPet', () => {
@@ -94,7 +91,6 @@ describe('AddPet', () => {
         });
     });
 
-    // Validaciones.
     describe('Validaciones del formulario', () => {
 
         it('muestra error si no se selecciona refugio', async () => {
@@ -117,7 +113,6 @@ describe('AddPet', () => {
             renderComponent();
             await userEvent.click(screen.getByRole('button', { name: /guardar registro/i }));
             await waitFor(() => {
-                // Todos los campos requeridos muestran error si no se llenan.
                 const errors = screen.getAllByText('Campo requerido');
                 expect(errors.length).toBeGreaterThan(0);
             });
@@ -157,22 +152,14 @@ describe('AddPet', () => {
         });
     });
 
-    // Carga de imagenes de mascota.
     describe('Carga de imagen', () => {
 
         it('muestra preview al cargar una imagen', async () => {
             const mockResult = 'data:image/png;base64,imagentest123';
 
             class MockFileReader {
-                constructor() {
-                    this.result = mockResult;
-                    this.onloadend = null;
-                }
-                readAsDataURL() {
-                    setTimeout(() => {
-                        this.onloadend && this.onloadend();
-                    }, 0);
-                }
+                constructor() { this.result = mockResult; this.onloadend = null; }
+                readAsDataURL() { setTimeout(() => this.onloadend && this.onloadend(), 0); }
             }
             vi.stubGlobal('FileReader', MockFileReader);
 
@@ -195,27 +182,18 @@ describe('AddPet', () => {
             const mockResult = 'data:image/png;base64,imagentest123';
 
             class MockFileReader {
-                constructor() {
-                    this.result = mockResult;
-                    this.onloadend = null;
-                }
-                readAsDataURL() {
-                    setTimeout(() => {
-                        this.onloadend && this.onloadend();
-                    }, 0);
-                }
+                constructor() { this.result = mockResult; this.onloadend = null; }
+                readAsDataURL() { setTimeout(() => this.onloadend && this.onloadend(), 0); }
             }
             vi.stubGlobal('FileReader', MockFileReader);
 
             renderComponent();
 
-            // Primero dispara el error.
             await userEvent.click(screen.getByRole('button', { name: /guardar registro/i }));
             await waitFor(() =>
                 expect(screen.getByText('La fotografía es obligatoria')).toBeInTheDocument()
             );
 
-            // Luego carga imagen.
             const fileInput = document.querySelector('input[type="file"]');
             const file = new File(['imagen'], 'mascota.png', { type: 'image/png' });
             fireEvent.change(fileInput, { target: { files: [file] } });
@@ -228,7 +206,6 @@ describe('AddPet', () => {
         });
     });
 
-    // Enviar formulario.
     describe('Envío del formulario', () => {
 
         const setupFullForm = async () => {
@@ -242,16 +219,16 @@ describe('AddPet', () => {
             renderComponent();
             await waitFor(() => screen.getByText('Huellitas'));
 
-            // Cargar imagen.
+            // Cargar imagen
             const fileInput = document.querySelector('input[type="file"]');
             fireEvent.change(fileInput, { target: { files: [new File(['img'], 'foto.png', { type: 'image/png' })] } });
             await waitFor(() => screen.getByAltText('Vista previa'));
 
-            // Seleccionar refugio.
+            // Seleccionar refugio
             const shelterSelect = screen.getAllByRole('combobox')[0];
             await userEvent.selectOptions(shelterSelect, '1');
 
-            // Llenar campos.
+            // Llenar campos
             await fillForm();
         };
 
@@ -317,12 +294,10 @@ describe('AddPet', () => {
         it('no llama a petService.crear si el formulario es inválido', async () => {
             renderComponent();
             await userEvent.click(screen.getByRole('button', { name: /guardar registro/i }));
-
             expect(petService.crear).not.toHaveBeenCalled();
         });
     });
 
-    // Navegar.
     describe('Navegación', () => {
 
         it('navega hacia atrás al hacer clic en Regresar', async () => {
